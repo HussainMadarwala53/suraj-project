@@ -3,17 +3,17 @@ var laser,laserImage,lasergroup;
 var commet,commetImage,commetgroup;
 var score = 0, commetdestroyed = 0;
 var gameover,gameoverImage;
+var PLAY = 1;
+var END = 0;
 
-var PLAY;
-var END;
 var gameState = PLAY;
-
+// console.log(gameState)
 
 function preload(){
  spaceshipImage=loadAnimation("spaceship 3-0.png","spaceship 3-1.png","spaceship 3-2.png","spaceship 3-3.png","spaceship 3-4.png");
   laserImage=loadImage("laser.png");
-  commetImage=loadImage("commet.png")
-  gameoverImage = loadImage("game over.png");
+  commetImage=loadAnimation("commet.png")
+  gameoverImage = loadImage("game over.png")
 
 
 }
@@ -29,12 +29,13 @@ function setup(){
   gameover.addImage(gameoverImage);
   gameover.visible = false; 
 
-  commetgroup=new Group();
-  lasergroup=new Group();
+  commetgroup=createGroup();
+  lasergroup=createGroup();
 }
 
 function draw() {
   background("#34404E");
+  // console.log(gameState)
 
   if(gameState===PLAY){
     spawncommet();
@@ -53,6 +54,16 @@ if(lasergroup.isTouching(commetgroup)){
 
 if(commetgroup.isTouching(spaceship)){
  gameState =END 
+ gameover.visible = true;
+ spaceship.change
+ spaceship.destroy();
+ lasergroup.destroyEach();
+ commetgroup.destroyEach();
+ commetgroup.setVelocityXEach(0);
+ lasergroup.setVelocityXEach(0);
+ gameover.visible = true;
+
+//  console.log(gameState);
 }
 
 
@@ -65,15 +76,18 @@ if(commetgroup.isTouching(spaceship)){
   text("SCORE : " + score , 560,50);
   text("COMET DESTROYED : " + commetdestroyed , 560,70);
   }
-  else if(gameState === END){
-    gameover.visible = true;
-    spaceship.destroy();
-    lasergroup.destroyEach();
-    commetgroup.destroyEach();
-    commetgroup.setVelocityXEach(0);
-    lasergroup.setVelocityXEach(0);
+  // if(gameState == END){
+  //   console.log(gameState);
+  //   gameover.visible = true;
+  //   // gameover.addImage(gameoverImage);;
+
+  //   spaceship.destroy();
+  //   lasergroup.destroyEach();
+  //   commetgroup.destroyEach();
+  //   commetgroup.setVelocityXEach(0);
+  //   lasergroup.setVelocityXEach(0);
   
-   }
+  //  }
 
   
   
@@ -102,13 +116,13 @@ if(commetgroup.isTouching(spaceship)){
    function spawncommet(){
     if(frameCount %100===0){
       commet=createSprite(800,Math.round(random(50,450)));
-      commet.addImage(commetImage);
+      commet.addAnimation("Moving" ,commetImage);
       commet.velocityX=-4;
       commet.scale=0.5; 
       commetgroup.add (commet);
       commet.lifetime=800;
-      commet.debug= true;
-      commet.setCollider("rectangle",10,-25,140,100)
+      // commet.debug= true;
+      // commet.setCollider("rectangle",10,-25,140,100)
       
     }
   
